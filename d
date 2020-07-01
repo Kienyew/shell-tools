@@ -1,4 +1,5 @@
 #!/bin/bash
+# create a template source code file and output the file path
 
 
 AVAILABLE_FILE_TYPES=("c" "py" "cpp" "js" "html" "hs" "php" "cs" "rs")

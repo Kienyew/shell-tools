@@ -1,4 +1,6 @@
 #!/bin/bash
+# delay output from stdin
+
 DELAY_SECOND="$1"
 if [ "$(bc <<< "$DELAY_SECOND")" = "0" ]; then
     NO_DELAY=0

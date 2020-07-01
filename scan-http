@@ -1,5 +1,6 @@
 #!/bin/python
 # 2020年05月27日 星期三 22时02分40秒
+# check is http port (80) available for list of address in the format of '{ip}:{port}'
 
 import sys
 import requests

@@ -1,3 +1,5 @@
+/* repeat a string several times */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

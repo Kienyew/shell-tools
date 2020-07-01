@@ -1,4 +1,5 @@
 #!/bin/bash
+# randomly select a background and change gnome desktop's background to it
 
 WALLPAPER_PATHS=(
 	/usr/share/backgrounds/gnome/*.jpg

@@ -1,4 +1,6 @@
 #!/bin/bash
+# print today's date
+
 today (){
 	if [ "$1" = "--dashed" ]; then
 		DASHED="1"

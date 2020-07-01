@@ -1,3 +1,5 @@
+// create a random array of integers and output in accord to python list's format
+
 #include <random>
 #include <iostream>
 #include <string>

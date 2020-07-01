@@ -1,4 +1,5 @@
 #!/bin/bash
+# forgot what usage is it
 
 COMMAND="$1"
 shift

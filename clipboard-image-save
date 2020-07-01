@@ -1,4 +1,5 @@
 #!/bin/sh
+# save image in clipboard to temperory file and output the file path
 
 usage() {
     printf "$0 [OUTPUT_PATH]"

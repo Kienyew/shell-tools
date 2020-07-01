@@ -1,4 +1,5 @@
 #!/bin/bash
+# shell scripts to extract various types of compressed files to individual directory
 
 function usage() {
 	echo 'Usage: exarchive (archive_path) [password]'
