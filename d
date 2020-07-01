@@ -18,7 +18,7 @@ usage() {
 	echo ') [date_shift=today]'
 }
 
-if [ -z "$1" ]
+if [ -z "$1" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ] 
 then
 	usage > /dev/stderr
 	exit 1
