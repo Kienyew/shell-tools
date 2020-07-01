@@ -1,0 +1,14 @@
+#!/bin/bash
+today (){
+	if [ "$1" = "--dashed" ]; then
+		DASHED="1"
+	fi
+
+	if [ -n "$DASHED" ]; then
+		date +"%Y-%m-%d"
+	else
+		date +"%Y%m%d"
+	fi
+}
+
+today $1

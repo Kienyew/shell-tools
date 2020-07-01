@@ -1,0 +1,12 @@
+#!/bin/bash
+DELAY_SECOND="$1"
+if [ "$(bc <<< "$DELAY_SECOND")" = "0" ]; then
+    NO_DELAY=0
+fi
+
+while read -n 1 -d $'\0'; do
+    printf '%.1s' "$REPLY"
+    if [ ! $NO_DELAY ]; then
+        sleep "$DELAY_SECOND"
+    fi
+done

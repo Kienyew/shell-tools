@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ "$1" != "" ]]; then
+	TARGET_FILE_NAME="$(which "$1" 2> /dev/null)"
+fi
+
+if [[ "$TARGET_FILE_NAME" != "" ]]; then
+	cat "$TARGET_FILE_NAME"
+else
+	exit 1
+fi

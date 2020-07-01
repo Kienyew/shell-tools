@@ -1,0 +1,22 @@
+#!/bin/sh
+
+usage() {
+    printf "$0 [OUTPUT_PATH]"
+}
+
+IMAGE_SAVE_PATH="$1"
+[ "$IMAGE_SAVE_PATH" = "" ] && IMAGE_SAVE_PATH="$(mktemp)"
+
+HAS_IMAGE="$(xclip -selection clipboard -target TARGETS -o | grep 'image/')"
+if [ "$HAS_IMAGE" = "" ]; then
+    printf "image not found in clipboard.\n" >&2
+    exit 1
+fi
+
+if [ $? = 0 ]; then
+    echo "$IMAGE_SAVE_PATH"
+    xclip -selection clipboard -target 'image/png' -o > "$IMAGE_SAVE_PATH"
+else
+    printf "%s: unexpected error\n" "$0" >&2
+    exit 2
+fi

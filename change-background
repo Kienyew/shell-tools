@@ -1,0 +1,14 @@
+#!/bin/bash
+
+WALLPAPER_PATHS=(
+	/usr/share/backgrounds/gnome/*.jpg
+	/usr/share/backgrounds/gnome/*.png
+	/usr/share/backgrounds/manjaro-gnome/*.jpg
+	/usr/share/backgrounds/manjaro-gnome/*.png
+)
+
+WALLPAPER_INDEX=$(( $RANDOM % ${#WALLPAPER_PATHS[@]} ))
+SELECTED_WALLPAPER_PATH="${WALLPAPER_PATHS[$WALLPAPER_INDEX]}"
+echo $SELECTED__WALLPAPER_PATH
+gsettings set org.gnome.desktop.background picture-uri "$SELECTED_WALLPAPER_PATH"
+

@@ -1,0 +1,6 @@
+#!/bin/bash
+# Usage: sim2trad
+# convert the simplified chinese characters in clipboard to traditional chinese characters (inplace clipboard)
+
+xclip -sel clipboard -o | opencc -c s2t.json -i /dev/stdin -o /dev/stdout | xclip -i -sel clipboard
+

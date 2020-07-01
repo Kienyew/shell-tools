@@ -1,0 +1,31 @@
+#!/bin/python
+# 2020年05月27日 星期三 22时02分40秒
+
+import sys
+import requests
+from concurrent import futures
+
+ip_addresses = [ip_port_pair.split(':')[0] for ip_port_pair in sys.stdin.read().splitlines()]
+
+def request_html_port(ip: str) -> requests.Response:
+    return requests.get(f'http://{ip}', timeout=5)
+
+
+with futures.ThreadPoolExecutor(max_workers=30) as executor:
+    _futures = []
+    for ip in ip_addresses:
+        print(f'submitted {ip}')
+        future = executor.submit(request_html_port, ip)
+        _futures.append(future)
+
+    for completed in futures.as_completed(_futures):
+        try:
+            response = completed.result()
+            requested_url = response.request.url
+            print(f'{requested_url}: {response.status_code}')
+        except requests.exceptions.Timeout:
+            print('request timeout', file=sys.stderr)
+        except Exception:
+            print('other error', file=sys.stderr)
+
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+COMMAND="$1"
+shift
+
+"$COMMAND" $* &
+sleep 0.3
+WIN_IDENT="$(xdotool search --onlyvisible --class "$COMMAND" | sort | tail -1)"
+xdotool windowactivate "$WIN_IDENT"

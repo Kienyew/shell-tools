@@ -1,0 +1,38 @@
+#!/bin/bash
+
+usage() {
+  local THIS_FILE_BASENAME="${0##*/}"
+  echo -e "Usage: $THIS_FILE_BASENAME \e[4mINTERVAL_SECONDS\e[0m [jpg|png]"
+}
+
+INTERVAL="$1"
+FILETYPE="$(echo -n "$2" | awk '{ print tolower($0); }')"
+FILETYPE="${FILETYPE:-jpg}"
+case "$FILETYPE" in
+    "jpg");;
+    "png");;
+    *) usage && exit 1
+esac
+
+if [ "$INTERVAL" = "" ] || ! [[ "$INTERVAL" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+ usage
+ exit 1
+fi
+
+
+capture() {
+  PICTURE_DIRECTORY="$HOME/Pictures/ScreenMemories/$(date +"%Y-%m-%d")"
+  if [ ! -d "$PICTURE_DIRECTORY" ]; then
+    mkdir -p "$PICTURE_DIRECTORY"
+  fi
+
+  PICTURE_FILEBASENAME="$(date +"%H-%M-%S")."$FILETYPE""
+  FILEPATH="$PICTURE_DIRECTORY/$PICTURE_FILEBASENAME"
+  import -silent -window root "$FILEPATH"
+  echo "$FILEPATH"
+}
+
+while true; do
+  FILEPATH="$(capture)"
+  sleep "$INTERVAL"
+done

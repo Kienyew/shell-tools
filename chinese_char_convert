@@ -1,0 +1,33 @@
+#!/bin/bash
+# Usage: chinese_char_convert [--notify]
+# convert the chinese characters in clipboard either from traditional chinese to simplified chinese or simplified chinese to traditional chinese (auto detect)
+
+ORIGINAL_CHARS="$(xclip -sel clipboard -o)"
+sim2trad && TRANSLATED_CHARS="$(xclip -sel clipboard -o)"
+TRANSLATE_STATUS="s2t"
+if [ "$TRANSLATED_CHARS" = "$ORIGINAL_CHARS" ]; then
+	trad2sim && TRANSLATED_CHARS="$(xclip -sel clipboard -o)"
+	TRANSLATE_STATUS="t2s"	
+fi
+
+if [ "$TRANSLATED_CHARS" = "$ORIGINAL_CHARS" ]; then
+	TRANSLATE_STATUS="no_change"
+fi
+
+echo -n "$TRANSLATED_CHARS" | xclip -sel clipboard -i
+
+if [ "$1" == "--notify" ]; then
+	case "$TRANSLATE_STATUS" in
+		"s2t")
+			notify-send "简 -> 繁"
+		;;
+
+		"t2s")
+			notify-send "繁 -> 简"
+		;;
+
+		*)
+			notify-send "No change"
+		;;
+	esac
+fi

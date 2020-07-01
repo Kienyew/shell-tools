@@ -1,0 +1,68 @@
+#!/bin/bash
+
+function usage() {
+	echo 'Usage: exarchive (archive_path) [password]'
+}
+
+function extract() {
+	ARCHIVE_PATH="$1"
+	
+	if [ "$ARCHIVE_PATH" = "" ]; then
+		return 1
+	fi
+
+	PASSWORD="$2"
+
+	EX_TO_DIR=${ARCHIVE_PATH%.*}
+	if [ ! -d "$EX_TO_DIR" ]; then
+		mkdir "$EX_TO_DIR"
+	fi
+
+    FILE_STR="$(file "$ARCHIVE_PATH")"
+    if grep "7-zip archive data" <<< "$FILE_STR"; then
+        ARCHIVE_TYPE=7z
+    elif grep "Zip archive data" <<< "$FILE_STR"; then
+        ARCHIVE_TYPE=zip
+    elif grep "RAR archive data" <<< "$FILE_STR"; then
+        ARCHIVE_TYPE=rar
+    fi
+	
+	echo "Starting to extract archive. PATH=$ARCHIVE_PATH, TYPE=$ARCHIVE_TYPE, PASSWORD=$PASSWORD, DEST_DIR=$EX_TO_DIR"
+
+	case "$ARCHIVE_TYPE" in 
+	rar)
+		unrar e "$ARCHIVE_PATH" -p"$PASSWORD" "$EX_TO_DIR" && return 0
+	;;
+	
+	7z)
+		7z e "$ARCHIVE_PATH" -p"$PASSWORD" -o"$EX_TO_DIR" && return 0
+	;;
+    zip)
+        unzip -P "$PASSWORD" "$ARCHIVE_PATH" -d "$EX_TO_DIR" && return 0
+    ;;
+	*) echo "archive type '$ARCHIVE_TYPE' not supported"; esac
+  rmdir "$EX_TO_DIR"
+  return 1
+}
+
+ARCHIVE_PATH="$1"
+if [ "$ARCHIVE_PATH" = "" ]; then
+    usage && exit 1;
+fi
+
+shift 1
+ARCHIVE_PASSWORDS=( "$@" )
+
+DONE=1
+for archive_password in "${ARCHIVE_PASSWORDS[@]}"; do
+  extract "$ARCHIVE_PATH" "$archive_password"
+  if [ $? = 0 ]; then
+    DONE=0 && break
+  fi
+done
+
+if [ $DONE != 0 ]; then
+  echo "Archive $ARCHIVE_PATH extraction not successful.";
+  exit 1
+fi
+
